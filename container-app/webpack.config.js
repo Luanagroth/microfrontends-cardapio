@@ -36,9 +36,9 @@ module.exports = {
     new ModuleFederationPlugin({
       name: 'container',
       remotes: {
-        cardapio: 'cardapio@http://localhost:3001/remoteEntry.js',
-        pedido: 'pedido@http://localhost:3002/remoteEntry.js'
-      },
+  cardapio: 'cardapio@https://microfrontends-essenza-bistro.vercel.app/remoteEntry.js',
+  pedido: 'pedido@https://essenza-micro-pedido.vercel.app/remoteEntry.js'
+},
       shared: {
         react: {
           singleton: true,
