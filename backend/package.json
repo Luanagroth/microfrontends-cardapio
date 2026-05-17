@@ -1,0 +1,25 @@
+{
+  "name": "backend",
+  "version": "0.1.0",
+  "private": true,
+  "main": "src/index.js",
+  "scripts": {
+    "dev": "nodemon --watch src --exec node src/index.js",
+    "test": "node --test tests/**/*.test.js",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev --name init",
+    "prisma:studio": "prisma studio",
+    "seed": "node prisma/seed.js",
+    "backup:db": "node scripts/backup-db.js"
+  },
+  "dependencies": {
+    "@prisma/client": "^4.16.0",
+    "cors": "^2.8.6",
+    "dotenv": "^16.4.5",
+    "express": "^5.2.1",
+    "helmet": "^7.1.0",
+    "multer": "^2.1.1",
+    "nodemon": "^3.1.14",
+    "prisma": "^4.16.0"
+  }
+}

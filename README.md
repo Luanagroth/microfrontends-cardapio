@@ -1,179 +1,165 @@
-# Essenza Bistrô — Sistema Interno de Comandas
+# Essenza Bistro - Plataforma de Operacao e Atendimento
 
-Sistema interno de restaurante desenvolvido com arquitetura de Micro Frontends. O projeto simula o controle de mesas, comandas, cardápio e pedidos do Essenza Bistrô, usando React, JavaScript, Webpack Module Federation e comunicação desacoplada por eventos globais.
+Sistema completo para operacao interna do restaurante e experiencia publica do cliente, com arquitetura em microfrontends e backend modular.
 
-## Demonstração
+## 1) O que foi construido
 
-### Painel principal
+- Painel interno (gestao): reservas, mapa de mesas, comandas, gestao de cardapio, relatorios e curriculos.
+- Site publico: visualizacao de cardapio, envio de reservas e envio de curriculo (PDF).
+- API backend: persistencia de dados, regras de negocio, uploads e integracao entre painel interno e site publico.
+- Banco local de desenvolvimento em SQLite com Prisma.
 
-Visão geral do sistema com cabeçalho Essenza Bistrô, mapa de mesas, comanda e cardápio.
+## 2) Tecnologias utilizadas e por que
 
-<p align="center">
-  <img src="./screenshots/dashboard.png" alt="Painel principal do Essenza Bistrô" width="900">
-</p>
+- React 18
+  - Interface reativa e componentizada para os 3 frontends.
+- Webpack 5 + Module Federation
+  - Permite separar o sistema em apps independentes com responsabilidade clara.
+- Node.js + Express
+  - API REST simples, performatica e facil de manter.
+- Prisma ORM
+  - Camada de acesso a dados tipada e migrations versionadas.
+- SQLite (dev local)
+  - Banco leve para ambiente local, sem necessidade de servidor dedicado.
+- Multer
+  - Upload de arquivos (curriculos PDF e imagens de produtos).
+- Vitest + Node test runner
+  - Testes automatizados de frontend (Vitest) e backend (node:test).
 
-### Comanda e pagamento
-
-Detalhe da comanda operacional com cupons clicáveis, forma de pagamento, cálculo de troco, resumo financeiro e total final.
-
-<p align="center">
-  <img src="./screenshots/comanda.png" alt="Comanda e pagamento do Essenza Bistrô" width="420">
-</p>
-
-## Objetivo
-
-O objetivo do projeto é aplicar conceitos de Micro Frontends em uma aplicação prática, separando responsabilidades em aplicações independentes e integrando tudo por meio de um container principal.
-
-Cada micro frontend pode ser executado separadamente, mantendo autonomia de desenvolvimento, configuração e evolução.
-
-## Arquitetura
-
-- `container-app`: aplicação principal responsável por integrar os micro frontends, controlar o mapa de mesas e centralizar a experiência do sistema.
-- `micro-cardapio`: micro frontend responsável pelo cardápio, categorias, busca de pratos, observações e envio de itens para pedido.
-- `micro-pedido`: micro frontend responsável pela comanda, itens do pedido, cupons, pagamentos, troco, fechamento e limpeza da comanda.
-- `shared`: pasta compartilhada com nomes de eventos, formatadores, cupons e formas de pagamento.
-
-## Module Federation
-
-A integração entre as aplicações é feita com Webpack Module Federation.
-
-- `micro-cardapio` expõe o componente `CardapioApp`.
-- `micro-pedido` expõe o componente `PedidoApp`.
-- `container-app` consome os dois micro frontends via `remoteEntry.js`.
-- `react` e `react-dom` são compartilhados como `singleton`, evitando múltiplas instâncias do React na aplicação.
-
-## Comunicação Entre Micros
-
-A comunicação entre os micro frontends é feita por eventos globais do navegador.
-
-Principais eventos:
-
-- adicionar item ao pedido;
-- mesa selecionada;
-- estado do pedido.
-
-Os nomes dos eventos ficam centralizados em `shared/events.js`, reduzindo acoplamento por strings soltas entre as aplicações.
-
-## Funcionalidades
-
-- Mapa de mesas.
-- Mapa de mesas visual.
-- Status de mesa livre, ocupada e selecionada.
-- Cardápio separado por categorias.
-- Cardápio com busca por categoria.
-- Busca de pratos em categorias com mais itens.
-- Adicionar item ao pedido.
-- Observações por item.
-- Comanda por mesa.
-- Comanda operacional.
-- Remover item da comanda.
-- Subtotal, desconto e total final.
-- Resumo financeiro.
-- Cupons `MESA10` e `ALMOCO5`.
-- Cupons clicáveis.
-- Formas de pagamento: PIX, crédito, débito e dinheiro.
-- Pagamento com troco.
-- Cálculo automático de troco para pagamento em dinheiro.
-- Abertura e fechamento da comanda.
-- Limpar comanda.
-- Tema claro/escuro.
-- Layout responsivo.
-
-## Estrutura de Pastas
+## 3) Arquitetura de pastas
 
 ```text
 microfrontends-cardapio/
-├── container-app/
-├── micro-cardapio/
-├── micro-pedido/
-├── screenshots/
-├── shared/
-├── package.json
-└── README.md
+  backend/               # API, regra de negocio, prisma, uploads e testes
+  container-app/         # Painel interno (porta 3000)
+  micro-pedido/          # Microfrontend de comandas (porta 3002)
+  public-client/         # Site publico (porta 4001)
+  shared/                # Utilitarios e contratos compartilhados
+  package.json           # Orquestracao de scripts na raiz
 ```
 
-## Portas
+## 4) Responsabilidades por modulo
 
-- `container-app`: http://localhost:3000
-- `micro-cardapio`: http://localhost:3001
-- `micro-pedido`: http://localhost:3002
+- `backend/src/modules/reservations`
+  - Criacao, listagem e atualizacao de status de reservas.
+- `backend/src/modules/orders`
+  - Fluxo de comandas, itens, totais, descontos e status.
+- `backend/src/modules/products` e `backend/src/modules/categories`
+  - Catalogo do cardapio e organizacao por categorias.
+- `backend/src/modules/curriculums`
+  - Recebimento, listagem e status de curriculos enviados.
+- `backend/src/modules/uploads`
+  - Upload de imagem de produto.
+- `container-app/src/components`
+  - Telas do sistema interno por contexto de negocio.
+- `micro-pedido/src`
+  - Operacao de comanda ativa + historico/demonstrativo.
+- `public-client/src/components`
+  - Fluxos publicos do cliente (reservas, cardapio e trabalhe conosco).
+- `shared/`
+  - Reuso de contratos e helpers (`apiBase`, eventos, formatadores, cupons e pagamentos).
 
-## Como Executar
+## 5) Portas do projeto
 
-Na raiz do projeto:
+- `http://localhost:3000` -> painel interno
+- `http://localhost:3002` -> microfrontend de comandas
+- `http://localhost:4000` -> backend/API
+- `http://localhost:4001` -> site publico
+
+## 6) Pre-requisitos
+
+- Node.js 18+ (recomendado 20+)
+- npm 9+
+
+## 7) Passo a passo para rodar o projeto
+
+### 7.1 Instalar dependencias
+
+Na raiz:
 
 ```bash
 npm install
 npm run install:all
+```
+
+### 7.2 Preparar banco (backend)
+
+```bash
+cd backend
+npx prisma migrate deploy
+cd ..
+```
+
+Opcional (popular catalogo inicial):
+
+```bash
+cd backend
+npx prisma db seed
+cd ..
+```
+
+### 7.3 Subir todo o ambiente
+
+```bash
 npm run start:all
 ```
 
-Para rodar individualmente:
+## 8) Scripts principais
+
+### Execucao
+
+- `npm run start:all`
+- `npm run start:backend`
+- `npm run start:container`
+- `npm run start:pedido`
+- `npm run start:public`
+
+### Testes
+
+- `npm run test:all`
+- `npm run test:backend`
+- `npm run test:container`
+- `npm run test:pedido`
+- `npm run test:public`
+- `npm run test:e2e`
+
+## 9) Banco de dados (acesso rapido)
+
+- Tipo: `SQLite`
+- Arquivo: `backend/prisma/dev.db`
+
+Para abrir no DBeaver:
+
+1. Nova conexao
+2. Driver `SQLite`
+3. Selecionar o arquivo `backend/prisma/dev.db`
+4. Testar conexao e concluir
+
+## 10) Fluxo de dados (resumo)
+
+1. Cliente usa o `public-client` (reserva/curriculo).
+2. Requisicoes vao para o `backend` (`/api/...`).
+3. Dados persistem no `SQLite` via Prisma.
+4. Painel interno (`container-app` + `micro-pedido`) consome a mesma API e reflete os dados em tempo de operacao.
+
+## 11) Boas praticas aplicadas
+
+- Separacao de responsabilidades por dominio.
+- Reuso de utilitarios compartilhados em `shared/`.
+- Validacoes de entrada no backend com retorno HTTP coerente (`400` para erro de validacao).
+- Cobertura de testes automatizados para backend e frontends.
+- Estrutura preparada para evolucao incremental sem acoplamento forte entre modulos.
+
+## 12) Operacao em producao (base)
+
+- Backend com leitura de ambiente via `.env` (`dotenv`).
+- CORS configuravel por variavel `ALLOWED_ORIGINS`.
+- Headers de seguranca basicos com `helmet`.
+- Script de backup local do SQLite:
 
 ```bash
-npm run start:container
-npm run start:cardapio
-npm run start:pedido
+cd backend
+npm run backup:db
 ```
 
-## Scripts
-
-- `install:all`: instala as dependências do `container-app`, `micro-cardapio` e `micro-pedido`.
-- `start:all`: inicia todas as aplicações em paralelo com `concurrently`.
-- `start:container`: inicia somente o container principal.
-- `start:cardapio`: inicia somente o micro frontend do cardápio.
-- `start:pedido`: inicia somente o micro frontend da comanda/pedido.
-
-## Tecnologias
-
-- React
-- JavaScript
-- Webpack
-- Webpack Dev Server
-- Webpack Module Federation
-- Babel
-- CSS
-- concurrently
-
-## Boas Práticas Aplicadas
-
-- Separação por responsabilidade.
-- Micro frontends independentes.
-- Integração por container.
-- Eventos globais centralizados.
-- Formatadores centralizados.
-- Cupons centralizados.
-- Formas de pagamento centralizadas.
-- Componentização de cards, itens e resumo financeiro.
-- `.gitignore` configurado para ignorar dependências, builds e logs.
-- Limpeza de artefatos de build.
-
-## Aprendizados
-
-- Arquitetura de Micro Frontends.
-- Integração por container.
-- Exposição e consumo de módulos remotos.
-- Comunicação desacoplada por eventos.
-- Organização de monorepo.
-- Reaproveitamento de código compartilhado.
-- Separação de responsabilidades no React.
-
-## Melhorias Futuras
-
-- Criar um micro frontend de reservas.
-- Criar um micro frontend administrativo.
-- Criar painel de cozinha.
-- Adicionar persistência com backend.
-- Integrar banco de dados.
-- Implementar autenticação.
-- Criar histórico de comandas.
-- Isolar CSS por micro frontend.
-- Adicionar testes automatizados.
-
-## Autora
-
-**Luana Groth**
-
-- GitHub: https://github.com/Luanagroth
-- LinkedIn: https://www.linkedin.com/in/luanagroth/
-- Portfólio: https://luana-groth-portfolio.vercel.app
+Arquivos de backup sao gerados em `backend/backups/`.

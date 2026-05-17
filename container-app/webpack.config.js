@@ -1,6 +1,7 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { ModuleFederationPlugin } = require('webpack').container;
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   entry: './src/index.jsx',
@@ -36,9 +37,8 @@ module.exports = {
     new ModuleFederationPlugin({
       name: 'container',
       remotes: {
-  cardapio: 'cardapio@https://microfrontends-essenza-bistro.vercel.app/remoteEntry.js',
-  pedido: 'pedido@https://essenza-micro-pedido.vercel.app/remoteEntry.js'
-},
+        pedido: 'pedido@http://localhost:3002/remoteEntry.js'
+      },
       shared: {
         react: {
           singleton: true,
@@ -52,6 +52,11 @@ module.exports = {
     }),
     new HtmlWebpackPlugin({
       template: './public/index.html'
+    }),
+    new CopyWebpackPlugin({
+      patterns: [
+        { from: 'public', to: '.', globOptions: { ignore: ['**/index.html'] } }
+      ]
     })
   ],
   devServer: {

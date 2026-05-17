@@ -2,13 +2,21 @@
   "name": "microfrontends-cardapio",
   "private": true,
   "scripts": {
-    "install:all": "npm install --prefix container-app && npm install --prefix micro-cardapio && npm install --prefix micro-pedido",
+    "install:all": "npm install --prefix container-app && npm install --prefix micro-pedido && npm install --prefix public-client",
     "start:container": "npm run start --prefix container-app",
-    "start:cardapio": "npm run start --prefix micro-cardapio",
     "start:pedido": "npm run start --prefix micro-pedido",
-    "start:all": "npx concurrently \"npm run start:container\" \"npm run start:cardapio\" \"npm run start:pedido\""
+    "start:backend": "npm run dev --prefix backend",
+    "start:public": "npm run start --prefix public-client",
+    "start:all": "npx concurrently \"npm run start:backend\" \"npm run start:container\" \"npm run start:pedido\" \"npm run start:public\"",
+    "test:backend": "npm run test --prefix backend",
+    "test:container": "npm run test --prefix container-app",
+    "test:pedido": "npm run test --prefix micro-pedido",
+    "test:public": "npm run test --prefix public-client",
+    "test:all": "npm run test:backend && npm run test:container && npm run test:pedido && npm run test:public",
+    "test:e2e": "playwright test"
   },
   "devDependencies": {
+    "@playwright/test": "^1.55.0",
     "concurrently": "^8.2.0"
   }
 }
