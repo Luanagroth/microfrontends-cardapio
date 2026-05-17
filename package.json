@@ -1,0 +1,14 @@
+{
+  "name": "microfrontends-cardapio",
+  "private": true,
+  "scripts": {
+    "install:all": "npm install --prefix container-app && npm install --prefix micro-cardapio && npm install --prefix micro-pedido",
+    "start:container": "npm run start --prefix container-app",
+    "start:cardapio": "npm run start --prefix micro-cardapio",
+    "start:pedido": "npm run start --prefix micro-pedido",
+    "start:all": "npx concurrently \"npm run start:container\" \"npm run start:cardapio\" \"npm run start:pedido\""
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.0"
+  }
+}
