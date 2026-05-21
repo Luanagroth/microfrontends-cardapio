@@ -1,6 +1,7 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const webpack = require('webpack');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   entry: './src/index.jsx',
@@ -35,6 +36,11 @@ module.exports = {
     }),
     new webpack.DefinePlugin({
       'process.env.API_BASE': JSON.stringify(process.env.API_BASE || '')
+    }),
+    new CopyWebpackPlugin({
+      patterns: [
+        { from: 'public', to: '.', globOptions: { ignore: ['**/index.html'] } }
+      ]
     })
   ],
   devServer: {
