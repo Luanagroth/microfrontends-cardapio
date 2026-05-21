@@ -3,6 +3,9 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { ModuleFederationPlugin } = require('webpack').container;
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
+const pedidoRemoteUrl =
+  process.env.PEDIDO_REMOTE_URL || 'http://localhost:3002/remoteEntry.js';
+
 module.exports = {
   entry: './src/index.jsx',
   output: {
@@ -37,7 +40,7 @@ module.exports = {
     new ModuleFederationPlugin({
       name: 'container',
       remotes: {
-        pedido: 'pedido@http://localhost:3002/remoteEntry.js'
+        pedido: `pedido@${pedidoRemoteUrl}`
       },
       shared: {
         react: {
