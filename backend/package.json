@@ -4,6 +4,8 @@
   "private": true,
   "main": "src/index.js",
   "scripts": {
+    "start": "node src/index.js",
+    "start:prod": "prisma db push && node prisma/seed.js && node src/index.js",
     "dev": "nodemon --watch src --exec node src/index.js",
     "test": "node --test tests/**/*.test.js",
     "prisma:generate": "prisma generate",
