@@ -1,6 +1,7 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { ModuleFederationPlugin } = require('webpack').container;
+const webpack = require('webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const pedidoRemoteUrl =
@@ -55,6 +56,9 @@ module.exports = {
     }),
     new HtmlWebpackPlugin({
       template: './public/index.html'
+    }),
+    new webpack.DefinePlugin({
+      'process.env.API_BASE': JSON.stringify(process.env.API_BASE || '')
     }),
     new CopyWebpackPlugin({
       patterns: [
