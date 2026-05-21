@@ -14,7 +14,10 @@ import {
 } from './services/orderService.ts';
 
 const ACTIVE_ORDER_STATUSES = ['aberta', 'em preparo', 'entregue'];
-const PUBLIC_MENU_ASSET_BASE = 'http://localhost:4001';
+const PUBLIC_MENU_ASSET_BASE =
+  typeof window !== 'undefined' && /vercel\.app$/i.test(window.location.hostname)
+    ? 'https://microfrontends-cardapio.vercel.app'
+    : 'http://localhost:4001';
 
 const menuAsset = (fileName) => `${PUBLIC_MENU_ASSET_BASE}/assets/images/menu/${fileName}`;
 
