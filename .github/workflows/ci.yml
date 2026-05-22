@@ -1,0 +1,50 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  quality:
+    name: Testes e Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            backend/package-lock.json
+            container-app/package-lock.json
+            micro-pedido/package-lock.json
+            public-client/package-lock.json
+
+      - name: Instalar dependencias (raiz)
+        run: npm ci
+
+      - name: Instalar dependencias (apps)
+        run: |
+          npm ci --prefix backend
+          npm ci --prefix container-app
+          npm ci --prefix micro-pedido
+          npm ci --prefix public-client
+
+      - name: Rodar testes
+        run: npm run test:all
+
+      - name: Build public-client
+        run: npm run build --prefix public-client
+
+      - name: Build container-app
+        run: npm run build --prefix container-app
+
+      - name: Build micro-pedido
+        run: npm run build --prefix micro-pedido

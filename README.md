@@ -210,6 +210,16 @@ npm run test:e2e
   - `ALLOWED_ORIGINS` configurado para domínios Vercel
   - start command: `npm run start:prod`
 
+## CI/CD
+
+- **CI (GitHub Actions)**: workflow em `.github/workflows/ci.yml` executa em push e PR para `main`:
+  - instalacao de dependencias
+  - testes (`npm run test:all`)
+  - build dos frontends (`public-client`, `container-app`, `micro-pedido`)
+- **CD (Deploy continuo)**:
+  - Vercel: deploy automatico dos frontends ao atualizar a `main`
+  - Railway: deploy do backend conectado ao repositorio
+
 ## Roadmap
 
 - Autenticação real com usuários e perfis por permissão.
