@@ -55,7 +55,7 @@ Essas entradas sao enviadas para o backend e aparecem automaticamente no sistema
 ### Sistema interno
 
 1. Login administrativo  
-![Login interno](./screenshots/login-interno.png)
+![Login interno](./screenshots/Login-interno.png)
 
 2. Painel geral  
 ![Painel interno](./screenshots/dashboard.png)
@@ -219,6 +219,6 @@ npm run test:e2e
 
 ## Contato
 
-- GitHub: `https://github.com/Luanagroth`
-- LinkedIn: `https://www.linkedin.com/in/luanagroth`
-- E-mail: `luanaeulalia56@gmail.com`
+- GitHub: [github.com/Luanagroth](https://github.com/Luanagroth)
+- LinkedIn: [linkedin.com/in/luanagroth](https://www.linkedin.com/in/luanagroth)
+- E-mail: [luanaeulalia56@gmail.com](mailto:luanaeulalia56@gmail.com)
