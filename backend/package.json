@@ -9,6 +9,7 @@
     "dev": "nodemon --watch src --exec node src/index.js",
     "test": "node --test tests",
     "prisma:generate": "prisma generate",
+    "prisma:push": "prisma db push",
     "prisma:migrate": "prisma migrate dev --name init",
     "prisma:studio": "prisma studio",
     "seed": "node prisma/seed.js",
