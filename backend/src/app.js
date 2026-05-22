@@ -17,6 +17,15 @@ const allowedOrigins = (process.env.ALLOWED_ORIGINS || defaultAllowedOrigins.joi
   .map((origin) => origin.trim())
   .filter(Boolean);
 
+const isTrustedVercelPreview = (origin = '') => {
+  try {
+    const { hostname, protocol } = new URL(origin);
+    return protocol === 'https:' && hostname.endsWith('.vercel.app');
+  } catch (error) {
+    return false;
+  }
+};
+
 app.use(
   helmet({
     crossOriginResourcePolicy: { policy: 'cross-origin' }
@@ -26,7 +35,7 @@ app.use(
 app.use(
   cors({
     origin(origin, callback) {
-      if (!origin || allowedOrigins.includes(origin)) {
+      if (!origin || allowedOrigins.includes(origin) || isTrustedVercelPreview(origin)) {
         return callback(null, true);
       }
       return callback(new Error('Origem nao permitida pelo CORS'));
