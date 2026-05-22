@@ -37,6 +37,9 @@ jobs:
           npm ci --prefix micro-pedido
           npm ci --prefix public-client
 
+      - name: Preparar banco para testes do backend (Prisma)
+        run: npm run prisma:generate --prefix backend && npx prisma db push --schema backend/prisma/schema.prisma
+
       - name: Rodar testes
         run: npm run test:all
 
