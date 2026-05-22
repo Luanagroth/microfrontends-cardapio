@@ -299,6 +299,8 @@ button {
   display: grid;
   gap: 22px;
   align-content: start;
+  width: min(1520px, 100%);
+  margin: 0 auto;
   padding: 28px;
 }
 
